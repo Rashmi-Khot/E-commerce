@@ -10,9 +10,9 @@
 <h1>this is adminhome page</h1>
 <h1 style="color:green">${pos}</h1>
 <h1 style="color:red">${neg}</h1>
-<a href=""><button>Approve product</button></a>
-<a href=""><button>View merchant</button></a>
-<a href=""><button>View customer</button></a>
+<a href="/admin/fetch-products"><button>Approve product</button></a>
+<a href="/admin/fetch-merchants"><button>View merchant</button></a>
+<a href="/admin/fetch-customers"><button>View customer</button></a>
 <a href="/logout"><button>logout</button></a>
 </body>
 </html>

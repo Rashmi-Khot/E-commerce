@@ -1,5 +1,7 @@
 package com.mycompany.ecommerce.dao;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -26,4 +28,8 @@ public class CustomerDao {
 	 public CustomerDto fetchById(int id) {
 		 return customerRepository.findById(id).orElse(null);
 	 }
+	public List<CustomerDto> fetchAllCustomers() {
+		return customerRepository.findAll();
+		
+	}
 }

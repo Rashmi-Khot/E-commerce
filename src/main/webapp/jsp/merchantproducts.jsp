@@ -9,6 +9,8 @@
 </head>
 <body>
     <h1>merchant products</h1>
+    <h1 style="color:green">${pos}</h1>
+<h1 style="color:red">${neg}</h1>
 <table border="1">
     <thead>
         <tr>
@@ -37,7 +39,7 @@
                <td>${product.getPrice()}</td>
                <td>${product.getStock()}</td>
                <td><a href="/merchant/delete/${product.getId()}"><button>Delete</button></a></td>
-               <td><a href="/merchant/edit"><button>Edit</button></a></td>
+               <td><a href="/merchant/edit/${product.getId()}"><button>Edit</button></a></td>
                 
             </tr>
         </c:forEach>

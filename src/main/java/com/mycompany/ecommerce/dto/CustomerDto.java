@@ -11,6 +11,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
@@ -35,6 +36,16 @@ public class CustomerDto {
 	private boolean status;
 	private int otp;
 	
+	@OneToOne(cascade=CascadeType.ALL,fetch = FetchType.EAGER) 
+	ShoppingCart cart;
+
+	
+	public ShoppingCart getCart() {
+		return cart;
+	}
+	public void setCart(ShoppingCart cart) {
+		this.cart = cart;
+	}
 	public int getId() {
 		return id;
 	}

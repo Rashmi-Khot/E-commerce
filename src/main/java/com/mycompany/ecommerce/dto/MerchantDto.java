@@ -26,13 +26,32 @@ public class MerchantDto {
 	private String name;
 	@Email(message = "Email format is not correct")
 	private String email;
-
 	private long mobile;
 	private String password;
 	private String gender;
 	private Date dob;
+	private boolean status;
+	private int otp;
 	
 	
+	public boolean isStatus() {
+		return status;
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
+
+	public int getOtp() {
+		return otp;
+	}
+
+	public void setOtp(int otp) {
+		this.otp = otp;
+	}
+
+
+
 	@OneToMany(cascade=CascadeType.ALL,fetch = FetchType.EAGER) //if not there in database product but it it will save
 	List<Product> products;
 	public List<Product> getProducts() {
@@ -51,8 +70,7 @@ public class MerchantDto {
 		this.dob = dob;
 	}
 
-	private boolean status;
-	private int otp;
+	
 
 	public int getId() {
 		return id;
@@ -102,26 +120,16 @@ public class MerchantDto {
 		this.gender = gender;
 	}
 
-	public boolean isStatus() {
-		return status;
-	}
-
-	public void setStatus(boolean status) {
-		this.status = status;
-	}
-
-	public int getOtp() {
-		return otp;
-	}
-
-	public void setOtp(int otp) {
-		this.otp = otp;
-	}
+	
 
 	@Override
 	public String toString() {
 		return "MerchantDto [id=" + id + ", name=" + name + ", email=" + email + ", mobile=" + mobile + ", password="
 				+ password + ", gender=" + gender + ", dob=" + dob + ", status=" + status + ", otp=" + otp + "]";
 	}
+
+	
+
+	
 
 }

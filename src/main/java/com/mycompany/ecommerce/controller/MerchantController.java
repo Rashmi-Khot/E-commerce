@@ -80,7 +80,7 @@ public class MerchantController {
 		}
 	
 	@GetMapping("/merchant/add-product")
-	public String addProduct(ModelMap map,HttpSession session) {  //modelmap is uesd to recive the msg from fronted
+	public String addProduct(ModelMap map,HttpSession session) {  
 		MerchantDto merchantDto=(MerchantDto) session.getAttribute("merchantDto");
 		if(merchantDto!=null) {
 		map.put("product", product);
@@ -93,23 +93,17 @@ public class MerchantController {
 	}
 	
 	@PostMapping("/merchant/add-product")
-	public String addProduct(@Valid Product product,BindingResult result,@RequestParam MultipartFile pic, ModelMap map,HttpSession session) throws IOException {  //modelmap is uesd to recive the msg from fronted
-		MerchantDto merchantDto=(MerchantDto) session.getAttribute("merchantDto");
-		if(merchantDto!=null) {
-			if(result.hasErrors()) 
-	
-		return "AddProduct";
+	public String addProduct(@Valid Product product, BindingResult result, @RequestParam MultipartFile pic,
+			ModelMap map, HttpSession session) throws IOException {
+		MerchantDto merchantDto = (MerchantDto) session.getAttribute("merchantDto");
+		if (merchantDto != null) {
+			if (result.hasErrors())
+				return "addproduct";
 			else {
-//				byte[] picture=new byte[pic.getInputStream().available()];
-//				pic.getInputStream().read(picture);
-//				
-//				product.setPicture(picture);
-//				System.out.println(product);
-				return merchantService.addProduct(product,pic,map,merchantDto);
+				return merchantService.addProduct(product, pic, map, merchantDto, session);
 			}
-		}
-		else {
-			map.put("neg", "invalid session");
+		} else {
+			map.put("neg", "Invalid Session");
 			return "main";
 		}
 	}
@@ -133,7 +127,7 @@ public class MerchantController {
 	public String deleteProduct(@PathVariable int id,HttpSession session,ModelMap modelMap) {
 		MerchantDto merchantDto=(MerchantDto) session.getAttribute("merchantDto");
 		if(merchantDto!=null) {
-			return merchantService.delete(id,modelMap,merchantDto);
+			return merchantService.delete(id,modelMap,merchantDto,session);
 		}
 		else {
 			modelMap.put("neg", "invalid session");
@@ -141,9 +135,42 @@ public class MerchantController {
 		}
 	}
 	
-
 	
+  @GetMapping("/merchant/edit/{id}")
+  public String editProduct(@PathVariable int id ,ModelMap modelMap,HttpSession session) {
+		MerchantDto merchantDto=(MerchantDto) session.getAttribute("merchantDto");
+		if(merchantDto!=null) {
+			return merchantService.edit(id,modelMap);
+		}
+		else {
+			modelMap.put("neg", "invalid session");
+			return "main";
+		}
+	}
+  
+  @PostMapping("/merchant/update-product")
+	public String updateProduct(@Valid Product product,BindingResult result,@RequestParam MultipartFile pic, ModelMap map,HttpSession session) throws IOException {  //modelmap is uesd to recive the msg from fronted
+		MerchantDto merchantDto=(MerchantDto) session.getAttribute("merchantDto");
+		if(merchantDto!=null) {
+			if(result.hasErrors()) 
 	
-		
+		return "editproduct";
+			else {
+//				byte[] picture=new byte[pic.getInputStream().available()];
+//				pic.getInputStream().read(picture);
+//				
+//				product.setPicture(picture);
+//				System.out.println(product);
+				return merchantService.editProduct(product,pic,map,merchantDto,session);  //productrepository.fetchal
+			}
+		}
+		else {
+			map.put("neg", "invalid session");
+			return "main";
+		}
+	}
+  
+  
+  
 
 }

@@ -11,8 +11,8 @@
 <h1 style="color:green">${pos}</h1>
 <h1 style="color:red">${neg}</h1>
 
-<a href="/customer/add-product"><button>Add product</button></a>
-<a href=""><button>View product</button></a>
+
+<a href="/customer/fetch-product"><button>View product</button></a>
 <a href=""><button>View orders</button></a>
 <a href=""><button>edit details</button></a>
 <a href="/logout"><button>Logout</button></a>

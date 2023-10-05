@@ -18,6 +18,7 @@ import com.mycompany.ecommerce.helper.Aes;
 import com.mycompany.ecommerce.helper.LoginHelper;
 import com.mycompany.ecommerce.helper.MailHelper;
 
+import jakarta.mail.Session;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 @Service
@@ -117,7 +118,7 @@ public class MerchantService {
 		}
 
 	}
-	public String addProduct( Product product, MultipartFile pic, ModelMap map,MerchantDto merchantDto) throws IOException {
+	public String addProduct( Product product, MultipartFile pic, ModelMap map,MerchantDto merchantDto,HttpSession session) throws IOException {
 		byte[] picture=new byte[pic.getInputStream().available()];
 		pic.getInputStream().read(picture);
 		
@@ -129,6 +130,7 @@ public class MerchantService {
 		merchantDto.setProducts(list);
 		
 		merchantDao.save(merchantDto);
+		session.setAttribute("merchantDto", merchantDto);
 		map.put("pos", "product addede success");
 		return "merchanthome";
 	}
@@ -144,22 +146,55 @@ public class MerchantService {
 			return "merchantproducts";
 		}
 	}
-	public String delete(int id, ModelMap modelMap, MerchantDto merchantDto) {
+	public String delete(int id, ModelMap modelMap, MerchantDto merchantDto,HttpSession session) {
 		    Product product=productDao.findById(id);
 		    if(product==null) {
 		    	modelMap.put("neg", "something went wrong");
 		    	return "main";
 		    }
 		    else {
+		    	for(Product product1: merchantDto.getProducts()) {
+		    		if(product1.getName().equals(product.getName())) {
+		    			product=product1;
+		    			break;
+		    		}
+		    	}
+		    	
 		    	merchantDto.getProducts().remove(product);
-		    	merchantDao.save(merchantDto);
+		    	MerchantDto merchantDto2=merchantDao.save(merchantDto);
+		    	session.setAttribute("merchantDto", merchantDto2);
 		    	productDao.delete(product);
 		    	modelMap.put("pos", "product deleted succussfully");
-		    	return fetchProducts(merchantDto, modelMap);
+		    	return fetchProducts(merchantDto2, modelMap);
 		    }
 			}
-			
+	public String edit(int id, ModelMap modelMap) {
+		 Product product=productDao.findById(id);
+		    if(product==null) {
+		    	modelMap.put("neg", "something went wrong");
+		    	return "main";
+		    }else {
+		    	modelMap.put("product", product);
+		    	return "editproduct";
+		    }
+		    }
+	public String editProduct(@Valid Product product, MultipartFile pic, ModelMap map, MerchantDto merchantDto,
+			HttpSession session) throws IOException {
+		byte[] picture=new byte[pic.getInputStream().available()];
+		pic.getInputStream().read(picture);
 		
+		if(picture.length==0) {
+			product.setPicture(productDao.findById(product.getId()).getPicture());
+		}
+		else {
+			product.setPicture(picture);
+		}
+		
+		productDao.save(product);
+		MerchantDto merchant2=merchantDao.fetchById(merchantDto.getId());
+		session.setAttribute("merchantDto", merchant2);
+		map.put("pos", "Product Updated Success");
+		return fetchProducts(merchant2, map);
+	}
 	
-
 }
