@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,7 +21,7 @@
 				<th>Mobile</th>
 				<th>Gender</th>
 				<th>Date of birth</th>
-				<th> Status</th>
+				<th>Status</th>
 			</tr>
 		</thead>
 		<tbody>

@@ -17,6 +17,7 @@ import com.mycompany.ecommerce.dto.MerchantDto;
 import com.mycompany.ecommerce.dto.Product;
 import com.mycompany.ecommerce.helper.LoginHelper;
 import com.mycompany.ecommerce.service.CustomerService;
+import com.razorpay.RazorpayException;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -100,11 +101,44 @@ public class CustomerController {
 	}
 	
 	@GetMapping("/customer/cart-view")
-	public String viewCart(HttpSession session,ModelMap modelMap) {
+	public String viewCart(HttpSession session,ModelMap modelMap) throws RazorpayException {
+		CustomerDto customerDto=(CustomerDto) session.getAttribute("customerDto");
+		if(customerDto!=null) {
+			return customerService.viewCart(modelMap, customerDto,session);
+		}
+		else {
+			modelMap.put("neg", "invalid session");
+			return "main";
+		}
 		
 	}
 
 	
+	@PostMapping("/customer/payment/{id}")
+	public String payment(@PathVariable int id,@RequestParam String razorpay_payment_id,HttpSession session,ModelMap map) throws RazorpayException {
+		CustomerDto customerDto = (CustomerDto) session.getAttribute("customerDto");
+		if (customerDto != null) {
+			return customerService.checkPayment(id,customerDto,razorpay_payment_id,session,map);
+		} else {
+			map.put("neg", "Invalid Session");
+			return "main";
+		}
+		
+	}
+	
+	@GetMapping("/customer/fetch-orders")
+	public String fetchOrders(HttpSession session, ModelMap modelMap) {
+		CustomerDto customerDto = (CustomerDto) session.getAttribute("customerDto");
+		if (customerDto != null) {
+			return customerService.fetchOrders(modelMap, customerDto);
+		} else {
+			modelMap.put("neg", "Invalid Session");
+			return "main";
+		}
+	}
+	
+	
 	
 	
 }
+

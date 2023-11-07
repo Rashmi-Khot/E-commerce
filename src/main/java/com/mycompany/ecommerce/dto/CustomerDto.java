@@ -38,8 +38,17 @@ public class CustomerDto {
 	
 	@OneToOne(cascade=CascadeType.ALL,fetch = FetchType.EAGER) 
 	ShoppingCart cart;
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	List<ShoppingOrder> orders;
 
 	
+	public List<ShoppingOrder> getOrders() {
+		return orders;
+	}
+	public void setOrders(List<ShoppingOrder> orders) {
+		this.orders = orders;
+	}
 	public ShoppingCart getCart() {
 		return cart;
 	}
@@ -106,6 +115,7 @@ public class CustomerDto {
 		return "CustomerDto [id=" + id + ", name=" + name + ", email=" + email + ", mobile=" + mobile + ", password="
 				+ password + ", gender=" + gender + ", dob=" + dob + ", status=" + status + ", otp=" + otp + "]";
 	}
+	
 	
 	
 	}
